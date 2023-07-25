@@ -12,6 +12,7 @@ class ChatPage extends StatefulWidget {
 // ignore: camel_case_types
 class _chatScreenState extends State<ChatPage> {
   final controller = Get.find<HomeController>();
+  final argument = Get.arguments;
 
   @override
   void initState() {
@@ -22,14 +23,15 @@ class _chatScreenState extends State<ChatPage> {
   @override
   void dispose() {
     controller.isChatScreenOpen.value = false;
+    Future.delayed(const Duration(milliseconds: 100), () {
+      controller.isRead(argument);
+    });
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final argument = Get.arguments;
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((data) {
       controller.scrollController
           .jumpTo(controller.scrollController.position.maxScrollExtent);
     });
@@ -71,12 +73,16 @@ class _chatScreenState extends State<ChatPage> {
                   color: Colors.white,
                 ),
               ),
-              Text(
-                name,
-                style: const TextStyle(
-                    fontSize: 28,
+              Padding(
+                padding: const EdgeInsets.only(left: 20, bottom: 5),
+                child: Text(
+                  name,
+                  style: const TextStyle(
+                    fontSize: 25,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white),
+                    color: Colors.white,
+                  ),
+                ),
               ),
             ],
           ),
@@ -117,13 +123,21 @@ class _chatScreenState extends State<ChatPage> {
   }
 
   Widget _bodyChat(String username) {
+    bool hasNewMessage = controller.isReaded[argument] == 0 ||
+            controller.isReaded[argument] == null
+        ? false
+        : true;
+    ;
+
     return Expanded(
       child: Container(
         padding: const EdgeInsets.only(left: 25, right: 25, top: 25),
         width: double.infinity,
         decoration: const BoxDecoration(
           borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(45), topRight: Radius.circular(45)),
+            topLeft: Radius.circular(45),
+            topRight: Radius.circular(45),
+          ),
           color: Colors.white,
         ),
         child: Obx(
@@ -131,14 +145,42 @@ class _chatScreenState extends State<ChatPage> {
             shrinkWrap: true,
             controller: controller.scrollController,
             itemCount: controller.usersMessage[username]?.length ?? 0,
-            itemBuilder: (context, index) => _itemChat(
-              avatar: 'assets/images/5.jpg',
-              chat: controller.usersMessage[username]?[index].sender == username
-                  ? 1
-                  : 0,
-              message: controller.usersMessage[username]?[index].message,
-              time: controller.usersMessage[username]?[index].time,
-            ),
+            itemBuilder: (context, index) {
+              if (hasNewMessage &&
+                  (index + 1) ==
+                      controller.usersMessage[username]!.length -
+                          controller.isReaded[argument]!) {
+                return const Center(
+                  child: Padding(
+                    padding: EdgeInsets.only(bottom: 10, top: 10),
+                    child: Column(
+                      children: [
+                        Text(
+                          'New Message',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.grey,
+                          ),
+                        ),
+
+                        // long line like hr in html
+                        Divider(),
+                      ],
+                    ),
+                  ),
+                );
+              } else {
+                return _itemChat(
+                  avatar: 'assets/images/5.jpg',
+                  chat: controller.usersMessage[username]?[index].sender ==
+                          username
+                      ? 1
+                      : 0,
+                  message: controller.usersMessage[username]?[index].message,
+                  time: controller.usersMessage[username]?[index].time,
+                );
+              }
+            },
             physics: const BouncingScrollPhysics(),
           ),
         ),

@@ -32,7 +32,10 @@ class HomeController extends GetxController {
   // is connected
   final isConnected = false.obs;
   final username = GetStorage().read('username');
-  final listUser = <User>[].obs;
+  final listSearchUser = <User>[].obs;
+
+  // isReaded
+  final isReaded = <String, int>{}.obs;
 
   final _soundpoolOptions = const SoundpoolOptions();
 
@@ -55,6 +58,18 @@ class HomeController extends GetxController {
         )),
       );
     }
+    // Load isReaded
+    Map<String, dynamic>? storedData2 = GetStorage().read('isReaded');
+    if (storedData2 != null) {
+      isReaded.assignAll(
+        Map<String, int>.from(storedData2.map(
+          (key, value) => MapEntry(
+            key,
+            value,
+          ),
+        )),
+      );
+    }
 
     _pool = Soundpool.fromOptions(options: _soundpoolOptions);
     var asset = await rootBundle.load("assets/audios/pop.wav");
@@ -74,15 +89,21 @@ class HomeController extends GetxController {
     openListener();
   }
 
+// isRead functiom
+  void isRead(String username) {
+    isReaded[username] = 0;
+    GetStorage().write('isReaded', isReaded);
+  }
+
 // searchUsername
   void searchUser(String username) async {
-    listUser.clear();
+    listSearchUser.clear();
     dynamic res = await userProvider.searchUsername(username);
     List<User> users = userProvider.parseUsers(res.bodyString);
     if (res.statusCode == 200) {
       for (var user in users) {
         if (GetStorage().read('username') != user.username) {
-          listUser.add(user);
+          listSearchUser.add(user);
         }
       }
     }
@@ -126,13 +147,22 @@ class HomeController extends GetxController {
         await GetStorage().write('usersMessage', usersMessage);
         // play a sound with soundpool
         await _pool?.play(_soundId!);
-        Future.delayed(const Duration(milliseconds: 300), () {
+        Future.delayed(const Duration(milliseconds: 300), () async {
           if (isChatScreenOpen.value) {
             scrollController.animateTo(
               scrollController.position.maxScrollExtent,
               curve: Curves.linear,
               duration: const Duration(milliseconds: 300),
             );
+          } else {
+            // add total number of message
+            isReaded.update(
+              message['sender'],
+              (value) => value + 1,
+              ifAbsent: () => 1,
+            );
+
+            await GetStorage().write('isReaded', isReaded);
           }
         });
       }

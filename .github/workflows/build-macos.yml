@@ -20,9 +20,7 @@ jobs:
           architecture: x64
       - run: flutter config --enable-macos-desktop
       - run: flutter build macos
-      - run: zip -r macos build/macos/Build/Products/Release/chat_client.app
-
       - uses: actions/upload-artifact@v1
         with:
           name: release-macos
-          path: build/macos/Build/Products/Release/macos.zip
+          path: build/macos/Build/Products/Release/chat_client.app

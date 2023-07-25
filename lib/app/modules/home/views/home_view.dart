@@ -107,7 +107,7 @@ class HomeView extends GetView<HomeController> {
     return Builder(builder: (context) {
       return GestureDetector(
         onTap: () {
-          Get.to(() => ChatPage(), arguments: name);
+          Get.to(() => const ChatPage(), arguments: name);
         },
         child: Card(
           margin: const EdgeInsets.symmetric(vertical: 20),
@@ -138,13 +138,44 @@ class HomeView extends GetView<HomeController> {
                     const SizedBox(
                       height: 10,
                     ),
-                    Text(
-                      '$chat',
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        color: Colors.black54,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          '$chat',
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            color: Colors.black54,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Obx(
+                          () => Visibility(
+                            visible: controller.isReaded[name] == 0 ||
+                                    controller.isReaded[name] == null
+                                ? false
+                                : true,
+                            child: Container(
+                              width: 20,
+                              height: 20,
+                              decoration: const BoxDecoration(
+                                color: Colors.green,
+                                shape: BoxShape.circle,
+                              ),
+                              margin: const EdgeInsets.only(right: 5),
+                              child: Center(
+                                child: Text(
+                                  '${controller.isReaded[name]}',
+                                  style: const TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 10),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -256,7 +287,7 @@ class StartMessage extends GetView<HomeController> {
       child: SizedBox(
         child: Obx(
           () => ListView.builder(
-            itemCount: controller.listUser.length,
+            itemCount: controller.listSearchUser.length,
             itemBuilder: (context, index) {
               return _itemUser(index: index);
             },
@@ -278,9 +309,9 @@ class StartMessage extends GetView<HomeController> {
         borderRadius: BorderRadius.circular(30),
       ),
       child: ListTile(
-        title: Text(controller.listUser[index].username!),
+        title: Text(controller.listSearchUser[index].username!),
         onTap: () {
-          User selectedUser = controller.listUser[index];
+          User selectedUser = controller.listSearchUser[index];
 
           // Add the selected user to the list
           if (userList == null) {
@@ -292,7 +323,7 @@ class StartMessage extends GetView<HomeController> {
           // Save the list of users to GetStorage
           sharedPref.write('userList', userList);
 
-          Get.off(() => ChatPage(), arguments: selectedUser.username);
+          Get.off(() => const ChatPage(), arguments: selectedUser.username);
         },
       ),
     );
