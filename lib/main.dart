@@ -11,7 +11,7 @@ void main() async {
   // GetStorage().erase();
   runApp(
     GetMaterialApp(
-      title: "Chat App",
+      title: "Chat Me",
       debugShowCheckedModeBanner: false,
       initialRoute: AppPages.INITIAL,
       getPages: AppPages.routes,
