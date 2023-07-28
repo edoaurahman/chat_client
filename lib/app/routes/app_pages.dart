@@ -14,6 +14,7 @@ part 'app_routes.dart';
 class AppPages {
   AppPages._();
 
+  // ignore: non_constant_identifier_names
   static final String INITIAL = (GetStorage().read('logged') == false ||
           GetStorage().read('logged') == null)
       ? Routes.LOGIN

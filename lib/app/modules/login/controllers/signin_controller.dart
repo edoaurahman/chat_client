@@ -1,6 +1,6 @@
-import 'dart:convert';
+// ignore_for_file: unnecessary_overrides
 
-import 'package:chat_client/app/data/models/user_model.dart';
+import 'dart:convert';
 import 'package:chat_client/app/data/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -45,11 +45,6 @@ class SigninController extends GetxController {
       snackBar('Notification', message);
       _buttonLoading.value = false;
     }
-  }
-
-  void getById(int id) async {
-    User? user = await userProvider.getUser(id);
-    print(user?.verificationCode);
   }
 
   @override

@@ -123,12 +123,6 @@ class _chatScreenState extends State<ChatPage> {
   }
 
   Widget _bodyChat(String username) {
-    bool hasNewMessage = controller.isReaded[argument] == 0 ||
-            controller.isReaded[argument] == null
-        ? false
-        : true;
-    ;
-
     return Expanded(
       child: Container(
         padding: const EdgeInsets.only(left: 25, right: 25, top: 25),
@@ -146,10 +140,12 @@ class _chatScreenState extends State<ChatPage> {
             controller: controller.scrollController,
             itemCount: controller.usersMessage[username]?.length ?? 0,
             itemBuilder: (context, index) {
-              if (hasNewMessage &&
+              final messageList = controller.usersMessage[username]!;
+              final isUnreadMessage = controller.isReaded[username] != 0 &&
                   (index + 1) ==
-                      controller.usersMessage[username]!.length -
-                          controller.isReaded[argument]!) {
+                      messageList.length - controller.isReaded[username]!;
+
+              if (isUnreadMessage) {
                 return const Center(
                   child: Padding(
                     padding: EdgeInsets.only(bottom: 10, top: 10),
@@ -162,7 +158,6 @@ class _chatScreenState extends State<ChatPage> {
                             color: Colors.grey,
                           ),
                         ),
-
                         // long line like hr in html
                         Divider(),
                       ],
@@ -171,13 +166,9 @@ class _chatScreenState extends State<ChatPage> {
                 );
               } else {
                 return _itemChat(
-                  avatar: 'assets/images/5.jpg',
-                  chat: controller.usersMessage[username]?[index].sender ==
-                          username
-                      ? 1
-                      : 0,
-                  message: controller.usersMessage[username]?[index].message,
-                  time: controller.usersMessage[username]?[index].time,
+                  chat: messageList[index].sender == username ? 1 : 0,
+                  message: messageList[index].message,
+                  time: messageList[index].time,
                 );
               }
             },
@@ -196,15 +187,14 @@ class _chatScreenState extends State<ChatPage> {
           chat == 0 ? MainAxisAlignment.end : MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        if (avatar != null && chat == 0)
+        if (chat == 0)
           Text(
             '$time',
             style: TextStyle(color: Colors.grey.shade400),
           )
         else
           Avatar(
-            image: avatar!,
-            size: 50,
+            imageUrl: avatar,
           ),
         Flexible(
           child: Container(
@@ -286,14 +276,15 @@ class _chatScreenState extends State<ChatPage> {
 
 class Avatar extends StatelessWidget {
   final double size;
-  final String image;
+  final String? imageUrl;
   final EdgeInsets margin;
 
-  const Avatar(
-      {super.key,
-      required this.image,
-      this.size = 50,
-      this.margin = const EdgeInsets.all(0)});
+  const Avatar({
+    Key? key,
+    this.imageUrl,
+    this.size = 50,
+    this.margin = const EdgeInsets.all(0),
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -305,10 +296,25 @@ class Avatar extends StatelessWidget {
         margin: const EdgeInsets.only(right: 10),
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          image: DecorationImage(
-            image: AssetImage(image),
-          ),
+          image: imageUrl != null
+              ? DecorationImage(
+                  image: NetworkImage(imageUrl!),
+                )
+              : null,
         ),
+        child: imageUrl != null
+            ? null // Tampilkan gambar profil jika ada
+            : Container(
+                decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Color.fromARGB(255, 216, 216, 216)),
+                child: Icon(
+                  Icons.person,
+                  color: Colors.indigo,
+                  size: size *
+                      0.8, // Sesuaikan ukuran ikon dengan ukuran kontainer
+                ),
+              ),
       ),
     );
   }

@@ -56,43 +56,6 @@ class RegisterView extends GetView<RegisterController> {
                       ),
                       const SizedBox(height: 80),
                       TextField(
-                        keyboardType: TextInputType.name,
-                        onChanged: (value) {
-                          controller.name = value;
-                        },
-                        decoration: const InputDecoration(
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(30)),
-                            borderSide: BorderSide(
-                              color: Color.fromRGBO(89, 228, 209, 1.0),
-                              width: 2.0,
-                            ),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(30)),
-                            borderSide: BorderSide(
-                              color: Color.fromRGBO(89, 228, 209, 1.0),
-                              width: 2.0,
-                            ),
-                          ),
-                          prefixIcon: Padding(
-                            padding: EdgeInsets.only(
-                              left: 30,
-                              right: 10,
-                            ), // Menambahkan jarak di sebelah kiri prefixIcon
-                            child: Icon(
-                              Icons.person,
-                              color: Color.fromRGBO(89, 228, 209, 1.0),
-                            ),
-                          ),
-                          hintText: 'NAME',
-                          hintStyle: TextStyle(
-                            color: Color.fromRGBO(89, 228, 209, 1.0),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      TextField(
                         onChanged: (value) {
                           controller.username = value;
                         },
@@ -118,7 +81,7 @@ class RegisterView extends GetView<RegisterController> {
                               right: 10,
                             ), // Menambahkan jarak di sebelah kiri prefixIcon
                             child: Icon(
-                              Icons.verified_user_rounded,
+                              Icons.person,
                               color: Color.fromRGBO(89, 228, 209, 1.0),
                             ),
                           ),

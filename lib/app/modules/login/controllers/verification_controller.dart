@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_overrides
+
 import 'dart:convert';
 
 import 'package:chat_client/app/data/providers/user_provider.dart';
@@ -24,8 +26,9 @@ class VerificationController extends GetxController {
 
   void verif() async {
     if (_code.value.length == 6) {
-      final email = sharedPref.read('email');
-      dynamic res = await userProvider.verif(email, _code.value);
+      final email = await sharedPref.read('email');
+      final fcmToken = GetStorage().read('fcmToken');
+      dynamic res = await userProvider.verif(email, _code.value, fcmToken);
       Map<String, dynamic> jsonData = jsonDecode(res.bodyString);
       String message = jsonData['message'];
       if (res.statusCode == 202) {

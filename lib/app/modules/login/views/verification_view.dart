@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 class VerificationView extends GetView<VerificationController> {
   VerificationView({Key? key}) : super(key: key);
 
+  @override
   final controller = Get.find<VerificationController>();
 
   @override
@@ -170,6 +171,7 @@ class VerificationBox extends StatefulWidget {
   }) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _VerificationBoxState createState() => _VerificationBoxState();
 }
 

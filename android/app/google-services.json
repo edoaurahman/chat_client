@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "213611714815",
+    "project_id": "chatme-d4b25",
+    "storage_bucket": "chatme-d4b25.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:213611714815:android:64e697b4ef09fa055854ca",
+        "android_client_info": {
+          "package_name": "com.edoaurahman.chat_client"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "213611714815-0p01k5gseq1hauskog1aemui8m4ssm29.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAFvvqLNlAQPhw5r6VX2jNITh6_PffbMMU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "213611714815-0p01k5gseq1hauskog1aemui8m4ssm29.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "213611714815-e85omtgtgtgrpimomvksvvcke3kt3k9r.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.edoaurahman.chatClient"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -25,15 +25,17 @@ class UserProvider extends GetConnect {
     return response.body;
   }
 
-  Future<Response> postUser(String name, String username, String email) async =>
-      await post('user', {'name': name, 'username': username, 'email': email});
+  Future<Response> postUser(String username, String email) async =>
+      await post('user', {'username': username, 'email': email});
+
   Future<Response> deleteUser(int id) async => await delete('user/$id');
 
   Future<Response<dynamic>> signin(String email) async =>
       await post('user/login', {'email': email});
 
-  Future<Response> verif(String email, String code) async => await post(
-      'user/verification-code', {"email": email, "verificationCode": code});
+  Future<Response> verif(String email, String code, String fcmToken) async =>
+      await post('user/verification-code',
+          {"email": email, "verificationCode": code, "fcmToken": fcmToken});
 
   Future<Response> searchUsername(String username) async =>
       await get('user/username/$username');

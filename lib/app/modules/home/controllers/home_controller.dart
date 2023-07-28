@@ -149,6 +149,7 @@ class HomeController extends GetxController {
         await _pool?.play(_soundId!);
         Future.delayed(const Duration(milliseconds: 300), () async {
           if (isChatScreenOpen.value) {
+            isRead(newMessage.receiver);
             scrollController.animateTo(
               scrollController.position.maxScrollExtent,
               curve: Curves.linear,
@@ -172,6 +173,8 @@ class HomeController extends GetxController {
   // Send a message
   void sendMessage(String username) async {
     if (messageTextController.text.isNotEmpty) {
+      isRead(username);
+      Future.delayed(const Duration(milliseconds: 500), () {});
       final Message newMessage = Message(
         sender: GetStorage().read('username'),
         receiver: username,
