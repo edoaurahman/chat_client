@@ -17,18 +17,21 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
         return android;
       case TargetPlatform.iOS:
-        return ios;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for ios - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.macOS:
-        return macos;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for macos - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -46,31 +49,21 @@ class DefaultFirebaseOptions {
     }
   }
 
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: "AIzaSyCLWmggqordR56iJtvhFfA5miilB8Tej-Q",
+    authDomain: "chatme-d4b25.firebaseapp.com",
+    projectId: "chatme-d4b25",
+    storageBucket: "chatme-d4b25.appspot.com",
+    messagingSenderId: "213611714815",
+    appId: "1:213611714815:web:53b95b247f1895b25854ca",
+    measurementId: "G-211TSYCVP0",
+  );
+
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyAFvvqLNlAQPhw5r6VX2jNITh6_PffbMMU',
     appId: '1:213611714815:android:64e697b4ef09fa055854ca',
     messagingSenderId: '213611714815',
     projectId: 'chatme-d4b25',
     storageBucket: 'chatme-d4b25.appspot.com',
-  );
-
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCtOfNEH7FJ0TzE-pw9ztck9Fd6c4J2a44',
-    appId: '1:213611714815:ios:9c200a1f3706c66a5854ca',
-    messagingSenderId: '213611714815',
-    projectId: 'chatme-d4b25',
-    storageBucket: 'chatme-d4b25.appspot.com',
-    iosClientId: '213611714815-e85omtgtgtgrpimomvksvvcke3kt3k9r.apps.googleusercontent.com',
-    iosBundleId: 'com.edoaurahman.chatClient',
-  );
-
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyCtOfNEH7FJ0TzE-pw9ztck9Fd6c4J2a44',
-    appId: '1:213611714815:ios:e3d0dd74e0406b265854ca',
-    messagingSenderId: '213611714815',
-    projectId: 'chatme-d4b25',
-    storageBucket: 'chatme-d4b25.appspot.com',
-    iosClientId: '213611714815-r3pa68jehl0eac2ukuh4bq34onvd7oj3.apps.googleusercontent.com',
-    iosBundleId: 'com.edoaurahman.chatClient.RunnerTests',
   );
 }

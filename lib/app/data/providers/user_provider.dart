@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:chat_client/config.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 import '../models/user_model.dart';
 
@@ -20,8 +21,8 @@ class UserProvider extends GetConnect {
     return parsed.map<User>((json) => User.fromJson(json)).toList();
   }
 
-  Future<User?> getUser(int id) async {
-    final response = await get('user/$id');
+  Future<User?> getUser(String username) async {
+    final response = await get('user/username/$username');
     return response.body;
   }
 
@@ -39,4 +40,9 @@ class UserProvider extends GetConnect {
 
   Future<Response> searchUsername(String username) async =>
       await get('user/username/$username');
+
+  Future<Response> patchUser(
+          String username, String email, String fcmToken) async =>
+      await patch('user/$username',
+          {'username': username, 'email': email, 'fcmToken': fcmToken});
 }
