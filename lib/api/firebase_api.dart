@@ -12,7 +12,7 @@ class FirebaseApi {
     List<User> users = [];
     await _fireBaseMessaging.requestPermission();
     final fcmToken = await _fireBaseMessaging.getToken(vapidKey: 'BHkzzmB0ZI-AnQ7TQ9Fydvuk3knDrAHyM__A1ekSWiwb-LVWF22R3lkdOCXEPHAsdIYkMOvLUMdNrTopHAFeLOI');
-    if(GetStorage().read('fcmToken') != null) {
+    if(GetStorage().read('fcmToken') != null && GetStorage().read('username') != null) {
       dynamic res =
           await _userProvider.searchUsername(GetStorage().read('username'));
       users = _userProvider.parseUsers(res.bodyString);
